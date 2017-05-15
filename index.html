@@ -13,7 +13,20 @@
   </body>
 
   <script>
-    // You can also require other files to run in this process
-    require('./renderer.js')
+    fetch('hello.wasm')
+      .then(function(res){ return res.arrayBuffer() })
+      .then(function(buf){ console.log("fetch", buf.byteLength) })
+  </script>
+  <script>
+    var xhr = new XMLHttpRequest
+    xhr.responseType = 'arraybuffer'
+    xhr.onload = function() {
+      console.log("xhr", xhr.response.byteLength)
+    }
+    xhr.onerror = function() {
+      console.log(new TypeError('Local request failed'))
+    }
+    xhr.open('GET', 'hello.wasm')
+    xhr.send(null)
   </script>
 </html>
